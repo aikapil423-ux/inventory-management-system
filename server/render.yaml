@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: haryana-police-api
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node server.js
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: JWT_EXPIRE
+        value: 24h
+      - key: CLIENT_URL
+        value: https://haryana-police-inventory.vercel.app
+      - key: CORS_ORIGINS
+        value: https://haryana-police-inventory.vercel.app,http://localhost:3000
+      - key: SEED_KEY
+        sync: false

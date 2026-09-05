@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Haryana Police — Inventory Management System</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect rx='15' width='100' height='100' fill='%231e3a5f'/><text x='50' y='65' font-family='Arial,sans-serif' font-size='40' font-weight='bold' fill='%23ffd700' text-anchor='middle'>HP</text></svg>">
+</head>
+<body>
+
+<!-- ==================== LOGIN SCREEN ==================== -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-card">
+    <div class="login-emblem">
+      <div class="emblem-shield">
+        <img src="C:\Users\HP\Desktop\Haryana-police-logo.png" alt="Haryana Police" style="width:80px;height:90px;object-fit:contain;">
+      </div>
+    </div>
+    <h1 class="login-title">Haryana Police</h1>
+    <p class="login-subtitle">Inventory Management System</p>
+    <form id="loginForm" autocomplete="off">
+      <div class="form-group">
+        <label for="loginUser">Username</label>
+        <input type="text" id="loginUser" required placeholder="Enter your username" autocomplete="username">
+      </div>
+      <div class="form-group">
+        <label for="loginPass">Password</label>
+        <div class="password-wrap">
+          <input type="password" id="loginPass" required placeholder="Enter your password" autocomplete="current-password">
+          <button type="button" class="toggle-pass" id="togglePass" tabindex="-1" aria-label="Show password">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+      </div>
+      <p class="login-error hidden" id="loginError">Invalid username or password</p>
+      <button type="submit" class="btn btn-primary btn-block" id="loginBtn">
+        <span class="btn-text">Sign In</span>
+        <span class="btn-loader hidden" id="loginLoader"></span>
+      </button>
+      <div class="forgot-pass-wrap">
+        <button type="button" class="forgot-pass-link" id="forgotPassBtn">Forgot Password?</button>
+        <span class="login-sep">|</span>
+        <button type="button" class="forgot-pass-link" id="requestAccessBtn">Request Access / Sign Up</button>
+      </div>
+    </form>
+    <div class="login-footer">
+      <p class="login-hint"><strong>Developer Admin:</strong> developer / dev@123</p>
+      <p class="login-hint"><strong>Gurugram Admin:</strong> admin / admin123</p>
+      <p class="login-hint"><strong>Faridabad Admin:</strong> admin2 / admin123</p>
+      <p class="login-hint"><strong>Staff:</strong> user / user123 | fbd_user / user123</p>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== MAIN APP ==================== -->
+<div class="app hidden" id="appRoot">
+
+  <!-- LEFT SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <img src="C:\Users\HP\Desktop\Haryana-police-logo.png" alt="Haryana Police" class="sidebar-logo">
+      <div class="sidebar-brand-text">
+        <h1>Haryana Police</h1>
+        <p>Inventory System</p>
+      </div>
+    </div>
+    <div class="sidebar-collapsed-logo">
+      <img src="C:\Users\HP\Desktop\Haryana-police-logo.png" alt="HP" class="collapsed-shield">
+    </div>
+
+    <nav class="sidebar-nav" id="sidebarNav">
+      <button class="sidebar-link active" data-tab="dashboard">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span>Dashboard</span>
+      </button>
+      <button class="sidebar-link" data-tab="inventory">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+        <span>Inventory</span>
+      </button>
+      <button class="sidebar-link" data-tab="transactions">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+        <span>Transactions</span>
+      </button>
+      <button class="sidebar-link" data-tab="demands">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 1.66 2.69 3 6 3s6-1.34 6-3v-5"/></svg>
+        <span>Demands</span>
+      </button>
+      <button class="sidebar-link" data-tab="inspections">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/><path d="M9 14l2 2 4-4"/></svg>
+        <span>Inspections</span>
+      </button>
+      <button class="sidebar-link" data-tab="reports">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        <span>Reports</span>
+      </button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="sidebar-avatar" id="sidebarAvatar">A</div>
+        <div class="sidebar-user-info">
+          <span class="sidebar-user-name" id="sidebarUserName">Admin</span>
+          <span class="sidebar-user-role" id="sidebarUserRole">District Admin</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- RIGHT CONTENT -->
+  <div class="content-area">
+
+    <!-- TOP BAR (slim) -->
+    <header class="topbar" id="topbar">
+      <div class="topbar-left">
+        <button class="sidebar-toggle" id="sidebarToggle" title="Toggle sidebar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <div class="district-selector">
+          <label class="district-label">District:</label>
+          <select id="districtSelect" class="district-select"></select>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <div class="notif-wrapper">
+          <button class="notif-bell" id="notifBell" title="Notifications">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+            <span class="notif-badge" id="notifBadge" style="display:none">0</span>
+          </button>
+          <div class="notif-panel hidden" id="notifPanel">
+            <div class="notif-panel-header">
+              <span>Notifications</span>
+              <button class="btn btn-sm btn-outline" id="markAllReadBtn">Mark all read</button>
+            </div>
+            <div class="notif-list" id="notifList"></div>
+          </div>
+        </div>
+        <div class="user-section">
+          <button class="btn btn-sm btn-gold" id="manageDistrictsBtn" data-dev-only title="Manage Districts">Districts</button>
+          <button class="btn btn-sm btn-outline-light" id="manageUsersBtn" data-admin-only title="Manage Users">Users</button>
+          <span class="district-badge" id="districtBadge"></span>
+          <span class="user-role-badge" id="userRoleBadge"></span>
+          <span class="user-display-name" id="userDisplayName"></span>
+          <button class="btn btn-sm btn-outline-light" id="logoutBtn">Logout</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="main-content" id="mainContent">
+
+    <!-- ========== DASHBOARD VIEW ========== -->
+    <section id="view-dashboard" class="view">
+      <div class="page-header">
+        <h2>Dashboard</h2>
+        <p class="page-subtitle" id="dashboardSubtitle">Overview of inventory status</p>
+      </div>
+
+      <div class="stats-grid" id="statsGrid">
+        <div class="stat-card stat-total">
+          <div class="stat-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+          </div>
+          <div class="stat-info">
+            <span class="stat-value" id="statTotalItems">0</span>
+            <span class="stat-label">Total Items</span>
+          </div>
+        </div>
+        <div class="stat-card stat-stock">
+          <div class="stat-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          </div>
+          <div class="stat-info">
+            <span class="stat-value" id="statTotalQuantity">0</span>
+            <span class="stat-label">Total Quantity</span>
+          </div>
+        </div>
+        <div class="stat-card stat-low">
+          <div class="stat-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </div>
+          <div class="stat-info">
+            <span class="stat-value" id="statLowStock">0</span>
+            <span class="stat-label">Low Stock Alerts</span>
+          </div>
+        </div>
+        <div class="stat-card stat-categories">
+          <div class="stat-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          </div>
+          <div class="stat-info">
+            <span class="stat-value" id="statCategories">0</span>
+            <span class="stat-label">Categories</span>
+          </div>
+        </div>
+        <div class="stat-card stat-damaged">
+          <div class="stat-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+          </div>
+          <div class="stat-info">
+            <span class="stat-value" id="statDamaged">0</span>
+            <span class="stat-label">Damaged</span>
+          </div>
+        </div>
+        <div class="stat-card stat-fair">
+          <div class="stat-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+          </div>
+          <div class="stat-info">
+            <span class="stat-value" id="statFair">0</span>
+            <span class="stat-label">Fair</span>
+          </div>
+        </div>
+        <div class="stat-card stat-poor">
+          <div class="stat-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          </div>
+          <div class="stat-info">
+            <span class="stat-value" id="statPoor">0</span>
+            <span class="stat-label">Poor</span>
+          </div>
+        </div>
+        <div class="stat-card stat-good">
+          <div class="stat-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg>
+          </div>
+          <div class="stat-info">
+            <span class="stat-value" id="statGood">0</span>
+            <span class="stat-label">Good</span>
+          </div>
+        </div>
+        <div class="stat-card stat-new">
+          <div class="stat-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+          </div>
+          <div class="stat-info">
+            <span class="stat-value" id="statNew">0</span>
+            <span class="stat-label">New</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="dashboard-grid">
+        <div class="card">
+          <div class="card-header">
+            <h3>Low Stock Items</h3>
+            <button class="btn btn-sm btn-outline" data-goto="inventory">View All</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Item</th><th>Category</th><th>Current</th><th>Min Required</th><th>Condition</th><th>Status</th></tr>
+              </thead>
+              <tbody id="lowStockBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3>Recent Transactions</h3>
+            <button class="btn btn-sm btn-outline" data-goto="transactions">View All</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Date</th><th>Item</th><th>Type</th><th>Qty</th><th>By</th></tr>
+              </thead>
+              <tbody id="recentTransBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== INVENTORY VIEW ========== -->
+    <section id="view-inventory" class="view hidden">
+      <div class="page-header">
+        <h2>Inventory</h2>
+        <div class="page-actions">
+          <button class="btn btn-primary" id="addItemBtn">+ Add Item</button>
+          <button class="btn btn-outline" id="manageCatsBtn" data-admin-only>Manage Categories</button>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <input type="text" id="searchInput" placeholder="Search items...">
+        <select id="categoryFilter"><option value="">All Categories</option></select>
+        <select id="locationFilter"><option value="">All Locations</option></select>
+        <select id="conditionFilter">
+          <option value="">All Conditions</option>
+          <option value="new">New</option>
+          <option value="good">Good</option>
+          <option value="fair">Fair</option>
+          <option value="poor">Poor</option>
+          <option value="damaged">Damaged</option>
+        </select>
+      </div>
+
+      <div class="cat-pills" id="catPills"></div>
+
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Item Name</th><th>Category</th><th>Quantity</th><th>Unit</th><th>Min Stock</th><th>Location</th><th>Condition</th><th>Status</th><th>Actions</th></tr>
+            </thead>
+            <tbody id="inventoryBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== TRANSACTIONS VIEW ========== -->
+    <section id="view-transactions" class="view hidden">
+      <div class="page-header">
+        <h2>Transactions</h2>
+        <div class="page-actions">
+          <button class="btn btn-primary" id="newTransBtn">+ New Transaction</button>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <input type="date" id="transDateFrom">
+        <input type="date" id="transDateTo">
+        <select id="transTypeFilter">
+          <option value="">All Types</option>
+          <option value="add">Addition</option>
+          <option value="remove">Removal</option>
+          <option value="transfer">Transfer</option>
+        </select>
+        <button class="btn btn-outline" id="clearTransFilter">Clear</button>
+      </div>
+
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Date</th><th>Item</th><th>Type</th><th>Quantity</th><th>From</th><th>To</th><th>Performed By</th><th>Notes</th></tr>
+            </thead>
+            <tbody id="transBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== DEMANDS VIEW ========== -->
+    <section id="view-demands" class="view hidden">
+      <div class="page-header">
+        <h2>Demands</h2>
+        <div class="page-actions">
+          <button class="btn btn-primary" id="raiseDemandBtn">+ Raise Demand</button>
+        </div>
+      </div>
+
+      <div class="stats-grid" id="demandStats">
+        <div class="stat-card stat-total">
+          <div class="stat-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 1.66 2.69 3 6 3s6-1.34 6-3v-5"/></svg>
+          </div>
+          <div class="stat-info">
+            <span class="stat-value" id="statTotalDemands">0</span>
+            <span class="stat-label">Total Demands</span>
+          </div>
+        </div>
+        <div class="stat-card stat-low">
+          <div class="stat-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          </div>
+          <div class="stat-info">
+            <span class="stat-value" id="statPendingDemands">0</span>
+            <span class="stat-label">Pending</span>
+          </div>
+        </div>
+        <div class="stat-card stat-stock">
+          <div class="stat-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg>
+          </div>
+          <div class="stat-info">
+            <span class="stat-value" id="statApprovedDemands">0</span>
+            <span class="stat-label">Approved</span>
+          </div>
+        </div>
+        <div class="stat-card stat-categories">
+          <div class="stat-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+          </div>
+          <div class="stat-info">
+            <span class="stat-value" id="statRejectedDemands">0</span>
+            <span class="stat-label">Rejected</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <input type="text" id="demandSearch" placeholder="Search demands...">
+        <select id="demandStatusFilter">
+          <option value="">All Status</option>
+          <option value="pending">Pending</option>
+          <option value="approved">Approved</option>
+          <option value="rejected">Rejected</option>
+        </select>
+      </div>
+
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Date</th><th>Item</th><th>Qty</th><th>Category</th><th>Condition</th><th>Requested By</th><th>Requested From</th><th>Reason</th><th>Status</th><th>Actions</th></tr>
+            </thead>
+            <tbody id="demandBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== INSPECTIONS VIEW ========== -->
+    <section id="view-inspections" class="view hidden">
+      <div class="page-header">
+        <h2>Inspections</h2>
+        <div class="page-actions">
+          <button class="btn btn-primary" id="newInspectionBtn">+ New Inspection</button>
+        </div>
+      </div>
+
+      <div class="stats-grid" id="inspectionStats">
+        <div class="stat-card stat-total">
+          <div class="stat-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+          </div>
+          <div class="stat-info">
+            <span class="stat-value" id="statTotalInspections">0</span>
+            <span class="stat-label">Total Inspections</span>
+          </div>
+        </div>
+        <div class="stat-card stat-stock">
+          <div class="stat-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg>
+          </div>
+          <div class="stat-info">
+            <span class="stat-value" id="statCompleted">0</span>
+            <span class="stat-label">Completed</span>
+          </div>
+        </div>
+        <div class="stat-card stat-low">
+          <div class="stat-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          </div>
+          <div class="stat-info">
+            <span class="stat-value" id="statPending">0</span>
+            <span class="stat-label">Pending</span>
+          </div>
+        </div>
+        <div class="stat-card stat-categories">
+          <div class="stat-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          </div>
+          <div class="stat-info">
+            <span class="stat-value" id="statOverdue">0</span>
+            <span class="stat-label">Overdue</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <input type="text" id="inspSearch" placeholder="Search inspections...">
+        <select id="inspTypeFilter">
+          <option value="">All Types</option>
+          <option value="routine">Routine</option>
+          <option value="special">Special</option>
+          <option value="annual">Annual</option>
+        </select>
+        <select id="inspStatusFilter">
+          <option value="">All Status</option>
+          <option value="completed">Completed</option>
+          <option value="pending">Pending</option>
+          <option value="overdue">Overdue</option>
+        </select>
+      </div>
+
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Date</th><th>Item / Asset</th><th>Inspected By</th><th>Type</th><th>Location</th><th>Findings</th><th>Recommendations</th><th>Status</th><th>Actions</th></tr>
+            </thead>
+            <tbody id="inspBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== REPORTS VIEW ========== -->
+    <section id="view-reports" class="view hidden">
+      <div class="page-header">
+        <h2>Reports</h2>
+        <div class="page-actions">
+          <button class="btn btn-outline" id="exportCSVBtn">Export CSV</button>
+        </div>
+      </div>
+
+      <div class="report-tabs">
+        <button class="report-tab active" data-rtab="stockReport">Stock Report</button>
+        <button class="report-tab" data-rtab="categoryReport">Category Breakdown</button>
+        <button class="report-tab" data-rtab="locationReport">Location Report</button>
+      </div>
+
+      <div id="reportContent" class="card"></div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <p>&copy; 2026 Haryana Police — Inventory Management System. All rights reserved.</p>
+  </footer>
+  </div><!-- end content-area -->
+</div>
+
+<!-- ==================== MODALS ==================== -->
+
+<!-- Add/Edit Item Modal -->
+<div class="modal-backdrop hidden" id="itemModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="itemModalTitle">Add New Item</h2>
+      <button class="modal-close" data-close>&times;</button>
+    </div>
+    <form id="itemForm">
+      <div class="form-group">
+        <label for="fItemName">Item Name</label>
+        <input type="text" id="fItemName" required placeholder="e.g. Wireless Radio">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="fCategory">Category</label>
+          <select id="fCategory" required></select>
+        </div>
+        <div class="form-group">
+          <label for="fUnit">Unit</label>
+          <select id="fUnit">
+            <option value="pcs">Pieces</option>
+            <option value="kg">Kilograms</option>
+            <option value="liters">Liters</option>
+            <option value="boxes">Boxes</option>
+            <option value="sets">Sets</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="fMinStock">Minimum Stock Alert</label>
+          <input type="number" id="fMinStock" min="0" value="5" required>
+        </div>
+        <div class="form-group">
+          <label>Total Quantity</label>
+          <input type="number" id="fQuantity" min="0" readonly style="background:#f0f2f5;font-weight:700" placeholder="Auto-calculated">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="fLocation">Location</label>
+        <select id="fLocation" required></select>
+      </div>
+      <div class="form-group">
+        <label>Item Condition Breakdown</label>
+        <div class="cond-inputs">
+          <div class="cond-input-group">
+            <span class="cond-dot cond-dot-new"></span>
+            <label for="fCondNew">New</label>
+            <input type="number" id="fCondNew" min="0" value="0" class="cond-input cond-input-new">
+          </div>
+          <div class="cond-input-group">
+            <span class="cond-dot cond-dot-good"></span>
+            <label for="fCondGood">Good</label>
+            <input type="number" id="fCondGood" min="0" value="0" class="cond-input cond-input-good">
+          </div>
+          <div class="cond-input-group">
+            <span class="cond-dot cond-dot-fair"></span>
+            <label for="fCondFair">Fair</label>
+            <input type="number" id="fCondFair" min="0" value="0" class="cond-input cond-input-fair">
+          </div>
+          <div class="cond-input-group">
+            <span class="cond-dot cond-dot-poor"></span>
+            <label for="fCondPoor">Poor</label>
+            <input type="number" id="fCondPoor" min="0" value="0" class="cond-input cond-input-poor">
+          </div>
+          <div class="cond-input-group">
+            <span class="cond-dot cond-dot-damaged"></span>
+            <label for="fCondDamaged">Damaged</label>
+            <input type="number" id="fCondDamaged" min="0" value="0" class="cond-input cond-input-damaged">
+          </div>
+        </div>
+      </div>
+      <input type="hidden" id="fItemId" value="">
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" data-close>Cancel</button>
+        <button type="submit" class="btn btn-primary" id="itemSaveBtn">Save Item</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- New Transaction Modal -->
+<div class="modal-backdrop hidden" id="transModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>New Transaction</h2>
+      <button class="modal-close" data-close>&times;</button>
+    </div>
+    <form id="transForm">
+      <div class="form-group">
+        <label for="tItem">Select Item</label>
+        <select id="tItem" required></select>
+      </div>
+      <div class="form-group">
+        <label for="tType">Transaction Type</label>
+        <select id="tType" required>
+          <option value="add">Addition (Restock)</option>
+          <option value="remove">Removal (Issue/Distribute)</option>
+          <option value="transfer">Transfer (Between Locations)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="tQuantity">Quantity</label>
+        <input type="number" id="tQuantity" min="1" required placeholder="0">
+      </div>
+      <div class="form-row">
+        <div class="form-group" id="tFromGroup">
+          <label for="tFrom">From Location</label>
+          <select id="tFrom"></select>
+        </div>
+        <div class="form-group" id="tToGroup">
+          <label for="tTo">To Location</label>
+          <select id="tTo"></select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="tNotes">Notes (optional)</label>
+        <input type="text" id="tNotes" placeholder="e.g. Monthly restock">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" data-close>Cancel</button>
+        <button type="submit" class="btn btn-primary">Record Transaction</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Manage Categories Modal -->
+<div class="modal-backdrop hidden" id="catModal">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <h2>Manage Categories</h2>
+      <button class="modal-close" data-close>&times;</button>
+    </div>
+    <div class="cat-add-row">
+      <input type="text" id="catInput" placeholder="New category name...">
+      <input type="text" id="catIconInput" placeholder="Icon (optional)">
+      <button class="btn btn-primary" id="catAddBtn">Add</button>
+    </div>
+    <div class="cat-list" id="catList"></div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline" data-close>Done</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add/Edit Inspection Modal -->
+<div class="modal-backdrop hidden" id="inspectionModal">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <h2 id="inspectionModalTitle">Add New Inspection</h2>
+      <button class="modal-close" data-close>&times;</button>
+    </div>
+    <form id="inspectionForm">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="fiItem">Item / Asset Inspected</label>
+          <input type="text" id="fiItem" required placeholder="e.g. 9mm Pistol, Patrol Car, Uniform Stock">
+        </div>
+        <div class="form-group">
+          <label for="fiInspectedBy">Inspected By</label>
+          <input type="text" id="fiInspectedBy" required placeholder="Name of inspector">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="fiType">Type of Inspection</label>
+          <select id="fiType" required>
+            <option value="routine">Routine</option>
+            <option value="special">Special</option>
+            <option value="annual">Annual</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="fiDate">Date of Inspection</label>
+          <input type="date" id="fiDate" required>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="fiLocation">Location</label>
+          <select id="fiLocation" required></select>
+        </div>
+        <div class="form-group">
+          <label for="fiStatus">Status</label>
+          <select id="fiStatus">
+            <option value="completed">Completed</option>
+            <option value="pending">Pending</option>
+            <option value="overdue">Overdue</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="fiFindings">Findings</label>
+        <textarea id="fiFindings" rows="3" placeholder="Describe the inspection findings..."></textarea>
+      </div>
+      <div class="form-group">
+        <label for="fiRecommendations">Recommendations</label>
+        <textarea id="fiRecommendations" rows="3" placeholder="Any recommendations or follow-up actions..."></textarea>
+      </div>
+      <input type="hidden" id="fiInspectionId" value="">
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" data-close>Cancel</button>
+        <button type="submit" class="btn btn-primary" id="inspectionSaveBtn">Save Inspection</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Raise Demand Modal -->
+<div class="modal-backdrop hidden" id="demandModal">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <h2 id="demandModalTitle">Raise New Demand</h2>
+      <button class="modal-close" data-close>&times;</button>
+    </div>
+    <form id="demandForm">
+      <div class="form-row two-col">
+        <div class="form-group">
+          <label for="fdItemName">Item Name *</label>
+          <input type="text" id="fdItemName" required placeholder="Type item name..." autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label for="fdItemSelect">Or pick from inventory</label>
+          <select id="fdItemSelect"><option value="">-- select --</option></select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="fdQuantity">Quantity Required</label>
+          <input type="number" id="fdQuantity" min="1" required value="1">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="fdCategory">Item Category</label>
+          <select id="fdCategory" required></select>
+        </div>
+        <div class="form-group">
+          <label for="fdCondition">Required Condition</label>
+          <select id="fdCondition" required>
+            <option value="any">Any Condition</option>
+            <option value="new">New</option>
+            <option value="good">Good</option>
+            <option value="fair">Fair</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="fdDemandTo">Demand To (District)</label>
+          <select id="fdDemandTo" required></select>
+        </div>
+        <div class="form-group">
+          <label for="fdDemandToLocation">To Location / Unit</label>
+          <select id="fdDemandToLocation" required></select>
+        </div>
+        <div class="form-group">
+          <label for="fdUrgency">Urgency</label>
+          <select id="fdUrgency">
+            <option value="normal">Normal</option>
+            <option value="urgent">Urgent</option>
+            <option value="critical">Critical</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="fdReason">Reason for Demand</label>
+        <textarea id="fdReason" rows="2" required placeholder="Why is this item needed?"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="fdRemarks">Additional Remarks</label>
+        <textarea id="fdRemarks" rows="2" placeholder="Any extra notes..."></textarea>
+      </div>
+      <input type="hidden" id="fdDemandId" value="">
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" data-close>Cancel</button>
+        <button type="submit" class="btn btn-primary" id="demandSaveBtn">Submit Demand</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Approve / Reject Demand Modal -->
+<div class="modal-backdrop hidden" id="demandActionModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="demandActionTitle">Review Demand</h2>
+      <button class="modal-close" data-close>&times;</button>
+    </div>
+    <div class="demand-action-details" id="demandActionDetails"></div>
+    <form id="demandActionForm">
+      <div class="form-group">
+        <label for="fdActionRemarks">Remarks</label>
+        <textarea id="fdActionRemarks" rows="3" placeholder="Add your remarks..."></textarea>
+      </div>
+      <div class="form-group rejection-reason-group hidden" id="rejectionReasonGroup">
+        <label for="fdRejectionReason">Rejection Reason *</label>
+        <textarea id="fdRejectionReason" rows="2" placeholder="Please provide reason for rejection..."></textarea>
+      </div>
+      <input type="hidden" id="fdActionDemandId" value="">
+      <input type="hidden" id="fdActionType" value="">
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" data-close>Cancel</button>
+        <button type="button" class="btn btn-danger" id="demandRejectBtn" style="margin-right:auto">Reject</button>
+        <button type="submit" class="btn btn-primary" id="demandApproveBtn">Approve & Submit</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Manage Users Modal -->
+<div class="modal-backdrop hidden" id="usersModal">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <h2 id="usersModalTitle">Manage Users</h2>
+      <button class="modal-close" data-close>&times;</button>
+    </div>
+    <div class="users-list" id="usersList"></div>
+    <div class="user-add-section">
+      <h4 id="userFormTitle">Add New User</h4>
+      <form id="addUserForm">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="nuUsername">Username</label>
+            <input type="text" id="nuUsername" required minlength="3">
+          </div>
+          <div class="form-group">
+            <label for="nuPassword">Password</label>
+            <input type="text" id="nuPassword" placeholder="Leave blank to keep current">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="nuName">Display Name</label>
+            <input type="text" id="nuName" required>
+          </div>
+          <div class="form-group">
+            <label for="nuMobile">Mobile</label>
+            <input type="tel" id="nuMobile" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="nuRole">Role</label>
+            <select id="nuRole">
+              <option value="user">General User</option>
+              <option value="mhc">MHC</option>
+              <option value="tsi">TSI</option>
+              <option value="station">Station Manager</option>
+              <option value="post">Police Post</option>
+              <option value="admin">District Admin</option>
+              <option value="devadmin" data-dev-only>Developer Admin</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="nuDistrict">District</label>
+            <select id="nuDistrict"></select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="nuLocation">Location</label>
+            <select id="nuLocation"></select>
+          </div>
+          <div></div>
+        </div>
+        <input type="hidden" id="nuEditId" value="">
+        <div class="form-actions">
+          <button type="button" class="btn btn-outline" id="cancelUserEdit" style="display:none">Cancel Edit</button>
+          <button type="submit" class="btn btn-primary" id="userSubmitBtn">Add User</button>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline" data-close>Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Manage Districts Modal -->
+<div class="modal-backdrop hidden" id="districtsModal">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <h2>Manage Districts</h2>
+      <button class="modal-close" data-close>&times;</button>
+    </div>
+    <div class="districts-list" id="districtsList"></div>
+    <div class="district-add-section">
+      <h4 id="distFormTitle">Add New District</h4>
+      <form id="addDistrictForm">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="ndName">District Name</label>
+            <input type="text" id="ndName" required placeholder="e.g. Karnal District">
+          </div>
+          <div class="form-group">
+            <label for="ndCode">District Code</label>
+            <input type="text" id="ndCode" required placeholder="e.g. KNL" maxlength="5">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="ndHQ">Headquarters</label>
+            <input type="text" id="ndHQ" required placeholder="e.g. Karnal">
+          </div>
+          <div></div>
+        </div>
+        <input type="hidden" id="ndEditId" value="">
+        <div class="form-actions">
+          <button type="button" class="btn btn-outline" id="cancelDistEdit" style="display:none">Cancel Edit</button>
+          <button type="submit" class="btn btn-primary" id="distSubmitBtn">Add District</button>
+        </div>
+      </form>
+    </div>
+    <div class="location-section">
+      <h4>Locations in Selected District</h4>
+      <div class="location-add-row">
+        <select id="nlType">
+          <option value="district">District HQ</option>
+          <option value="station">Police Station</option>
+          <option value="post">Police Post</option>
+          <option value="mhc">MHC Store</option>
+        </select>
+        <input type="text" id="nlName" placeholder="Location name...">
+        <button type="button" class="btn btn-primary btn-sm" id="addLocationBtn">Add</button>
+      </div>
+      <div class="location-list" id="locationList"></div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline" data-close>Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Forgot Password Modal -->
+<div class="modal-backdrop hidden" id="forgotPassModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Forgot Password</h2>
+      <button type="button" class="modal-close" data-close>&times;</button>
+    </div>
+    <form id="forgotPassForm">
+      <div class="form-group">
+        <label for="fpUsername">Username</label>
+        <input type="text" id="fpUsername" required placeholder="Enter your username...">
+      </div>
+      <div class="form-group">
+        <label for="fpPhone">Phone Number</label>
+        <input type="tel" id="fpPhone" required placeholder="Enter registered phone number..." pattern="[0-9]{10}" maxlength="10">
+      </div>
+      <div class="forgot-pass-result hidden" id="fpResult">
+        <div class="fp-result-box">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          <div>
+            <span class="fp-result-label">Request sent to admin successfully!</span>
+            <span class="fp-result-sub">You will be notified once your password is reset.</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" data-close>Cancel</button>
+        <button type="submit" class="btn btn-primary" id="fpSubmitBtn">Submit Request</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Request Access Modal -->
+<div class="modal-backdrop hidden" id="requestAccessModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Request Access / Sign Up</h2>
+      <button type="button" class="modal-close" data-close>&times;</button>
+    </div>
+    <form id="requestAccessForm">
+      <div class="form-group">
+        <label for="raName">Full Name</label>
+        <input type="text" id="raName" required placeholder="Enter your full name...">
+      </div>
+      <div class="form-group">
+        <label for="raPost">Post / Designation</label>
+        <input type="text" id="raPost" required placeholder="e.g. Constable, SI, Head Constable...">
+      </div>
+      <div class="form-group">
+        <label for="raMobile">Mobile Number</label>
+        <input type="tel" id="raMobile" required placeholder="10-digit mobile number..." pattern="[0-9]{10}" maxlength="10">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="raDistrict">District</label>
+          <select id="raDistrict" required></select>
+        </div>
+        <div class="form-group">
+          <label for="raLocation">Location / Station</label>
+          <select id="raLocation" required></select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="raUserType">Requested Role</label>
+        <select id="raUserType" required>
+          <option value="user">General User</option>
+          <option value="mhc">MHC</option>
+          <option value="tsi">TSI</option>
+          <option value="station">Station Manager</option>
+          <option value="post">Police Post</option>
+        </select>
+      </div>
+      <div class="forgot-pass-result hidden" id="raResult">
+        <div class="fp-result-box">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          <div>
+            <span class="fp-result-label">Request submitted successfully!</span>
+            <span class="fp-result-sub">District admin and developer admin have been notified. You will be contacted once approved.</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" data-close>Cancel</button>
+        <button type="submit" class="btn btn-primary" id="raSubmitBtn">Submit Request</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Toast Notification -->
+<div class="toast hidden" id="toast"></div>
+
+<script src="api-client.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

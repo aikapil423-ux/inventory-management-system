@@ -1,0 +1,32 @@
+# Dependencies
+node_modules/
+
+# Environment & secrets
+.env
+.env.local
+.env.*
+
+# Logs
+*.log
+server.log
+client2.log
+client3.log
+
+# Build output
+client/build/
+build/
+
+# Misc
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+
+# Vercel / deploy
+.vercel
+
+# MongoDB installers
+mongodb.msi
+mongodb.zip

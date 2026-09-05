@@ -1,0 +1,15 @@
+{
+  "name": "haryana-police-inventory",
+  "version": "1.0.0",
+  "description": "Haryana Police Inventory Management System (Malkhana)",
+  "scripts": {
+    "server": "cd server && npm run dev",
+    "client": "cd client && npm start",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "seed": "cd server && node seeds/seedData.js",
+    "install-all": "npm install && cd server && npm install && cd ../client && npm install"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
