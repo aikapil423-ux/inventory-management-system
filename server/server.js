@@ -14,7 +14,7 @@ const app = express();
 
 app.use(cors({
   origin: (origin, callback) => {
-    const allowed = (process.env.CORS_ORIGINS || `${process.env.CLIENT_URL},http://localhost:3000`)
+    const allowed = (process.env.CORS_ORIGINS || `${process.env.CLIENT_URL},http://localhost:3000,https://haryana-police-inventory-sys.vercel.app,https://client-three-tau-58.vercel.app`)
       .split(',').map(s => s.trim());
     if (!origin || allowed.includes(origin)) return callback(null, true);
     return callback(new Error('Not allowed by CORS'));
