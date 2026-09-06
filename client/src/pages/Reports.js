@@ -3,6 +3,7 @@ import api from '../services/api';
 import { FaFileAlt, FaChartBar, FaClipboardList, FaHistory, FaArrowUp } from 'react-icons/fa';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import toast from 'react-hot-toast';
+import { thStyle, tdStyle } from '../ui';
 
 const COLORS = ['#2563eb', '#16a34a', '#f59e0b', '#ef4444', '#7c3aed', '#0891b2', '#ea580c', '#64748b'];
 
@@ -196,6 +197,3 @@ export default function Reports() {
     </div>
   );
 }
-
-const thStyle = { padding: '12px 16px', textAlign: 'left', fontSize: 12, fontWeight: 600, color: '#64748b', textTransform: 'uppercase' };
-const tdStyle = { padding: '12px 16px', fontSize: 13, color: '#334155' };

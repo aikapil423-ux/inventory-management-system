@@ -3,6 +3,7 @@ import api from '../services/api';
 import { FaPlus, FaEdit, FaTrash, FaUserCheck, FaUserSlash } from 'react-icons/fa';
 import toast from 'react-hot-toast';
 import { useSelector } from 'react-redux';
+import { thStyle, tdStyle, labelStyle, inputStyle } from '../ui';
 
 const roleColors = { super_admin: '#dc2626', district_admin: '#2563eb', tsi: '#7c3aed', mhc_storekeeper: '#16a34a', inspection_officer: '#0891b2', unit: '#64748b' };
 const roleLabels = { super_admin: 'Super Admin', district_admin: 'District Admin', tsi: 'TSI', mhc_storekeeper: 'MHC Store Keeper', inspection_officer: 'Inspection Officer', unit: 'Unit' };
@@ -171,8 +172,3 @@ export default function UserManagement() {
     </div>
   );
 }
-
-const thStyle = { padding: '12px 16px', textAlign: 'left', fontSize: 12, fontWeight: 600, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' };
-const tdStyle = { padding: '12px 16px', fontSize: 13, color: '#334155' };
-const labelStyle = { display: 'block', fontSize: 12, fontWeight: 500, color: '#374151', marginBottom: 4 };
-const inputStyle = { width: '100%', padding: '8px 12px', border: '1px solid #d1d5db', borderRadius: 6, fontSize: 13, boxSizing: 'border-box' };

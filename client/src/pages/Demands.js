@@ -1,16 +1,15 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import api from '../services/api';
 import { FaPlus, FaCheck, FaTimes, FaPaperPlane, FaEye, FaHistory, FaKey, FaPhone, FaUserPlus } from 'react-icons/fa';
 import toast from 'react-hot-toast';
+import { labelStyle, inputStyle } from '../ui';
 
 const statusColors = { draft: '#64748b', submitted: '#f59e0b', approved: '#2563eb', fulfilled: '#16a34a', partially_fulfilled: '#0891b2', rejected: '#dc2626' };
 const urgencyColors = { low: '#64748b', medium: '#f59e0b', high: '#ea580c', critical: '#dc2626' };
 const resetStatusColors = { pending: '#f59e0b', approved: '#16a34a', rejected: '#dc2626' };
 const tabStyle = { padding: '10px 16px', border: '1px solid #d1d5db', borderRadius: 8, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 500 };
 const overlayStyle = { position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100, padding: 16 };
-const labelStyle = { display: 'block', fontSize: 12, fontWeight: 500, color: '#374151', marginBottom: 4 };
-const inputStyle = { width: '100%', padding: '8px 12px', border: '1px solid #d1d5db', borderRadius: 6, fontSize: 13, boxSizing: 'border-box' };
 const primaryBtnStyle = { padding: '8px 16px', backgroundColor: '#2563eb', color: '#fff', border: 'none', borderRadius: 8, cursor: 'pointer', fontSize: 13, fontWeight: 500 };
 const cancelBtnStyle = { padding: '8px 16px', border: '1px solid #d1d5db', borderRadius: 8, backgroundColor: '#fff', cursor: 'pointer', fontSize: 13 };
 const iconBtnStyle = (color) => ({ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 32, height: 32, border: `1px solid ${color}30`, borderRadius: 6, backgroundColor: `${color}10`, color, cursor: 'pointer', fontSize: 13 });
@@ -384,3 +383,4 @@ export default function Demands() {
     </div>
   );
 }
+

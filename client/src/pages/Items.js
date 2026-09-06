@@ -2,8 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import api from '../services/api';
 import { FaSearch, FaPlus, FaEdit, FaTrash, FaThList, FaLayerGroup, FaFilter } from 'react-icons/fa';
 import toast from 'react-hot-toast';
-
-const conditionColors = { new: '#16a34a', good: '#2563eb', fair: '#f59e0b', poor: '#ea580c', damaged: '#dc2626' };
+import { conditionColors, thStyle, tdStyle, labelStyle, inputStyle } from '../ui';
 
 export default function Items() {
   const [items, setItems] = useState([]);
@@ -277,8 +276,4 @@ export default function Items() {
   );
 }
 
-const thStyle = { padding: '12px 16px', textAlign: 'left', fontSize: 12, fontWeight: 600, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' };
-const tdStyle = { padding: '12px 16px', fontSize: 13, color: '#334155' };
-const labelStyle = { display: 'block', fontSize: 12, fontWeight: 500, color: '#374151', marginBottom: 4 };
-const inputStyle = { width: '100%', padding: '8px 12px', border: '1px solid #d1d5db', borderRadius: 6, fontSize: 13, boxSizing: 'border-box' };
 const viewBtnStyle = { padding: '10px 14px', border: '1px solid #d1d5db', borderRadius: 8, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 500 };

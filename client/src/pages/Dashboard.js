@@ -3,8 +3,8 @@ import { useSelector } from 'react-redux';
 import api from '../services/api';
 import { FaBox, FaExclamationTriangle, FaExchangeAlt, FaArrowDown, FaArrowUp, FaCheckCircle } from 'react-icons/fa';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+import { conditionColors } from '../ui';
 
-const conditionColors = { new: '#16a34a', good: '#2563eb', fair: '#f59e0b', poor: '#ea580c', damaged: '#dc2626' };
 const PIE_COLORS = ['#16a34a', '#2563eb', '#f59e0b', '#ea580c', '#dc2626'];
 
 const StatCard = ({ icon, label, value, color, subtext }) => (

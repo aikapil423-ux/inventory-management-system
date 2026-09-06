@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import api from '../services/api';
 import { FaSearch, FaPlus, FaCheck, FaTimes } from 'react-icons/fa';
 import toast from 'react-hot-toast';
+import { thStyle, tdStyle, labelStyle, inputStyle } from '../ui';
 
 const typeColors = { receive: '#16a34a', issue: '#dc2626', return: '#2563eb', transfer: '#7c3aed', damage: '#ea580c', disposal: '#64748b', adjustment: '#0891b2' };
 const statusColors = { pending: '#f59e0b', approved: '#2563eb', completed: '#16a34a', rejected: '#dc2626', cancelled: '#64748b' };
@@ -182,8 +183,3 @@ export default function Transactions() {
     </div>
   );
 }
-
-const thStyle = { padding: '12px 16px', textAlign: 'left', fontSize: 12, fontWeight: 600, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' };
-const tdStyle = { padding: '12px 16px', fontSize: 13, color: '#334155' };
-const labelStyle = { display: 'block', fontSize: 12, fontWeight: 500, color: '#374151', marginBottom: 4 };
-const inputStyle = { width: '100%', padding: '8px 12px', border: '1px solid #d1d5db', borderRadius: 6, fontSize: 13, boxSizing: 'border-box' };

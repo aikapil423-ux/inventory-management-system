@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { FaShieldAlt, FaUser, FaEnvelope, FaPhone, FaLock, FaArrowLeft, FaIdBadge, FaBuilding } from 'react-icons/fa';
 import toast from 'react-hot-toast';
 import api from '../services/api';
+import { labelStyle } from '../ui';
 
 export default function Signup() {
   const [districts, setDistricts] = useState([]);
@@ -206,5 +207,4 @@ const Field = ({ icon, label, name, type = 'text', value, onChange, required, pl
   </div>
 );
 
-const labelStyle = { display: 'block', fontSize: 12, fontWeight: 500, color: '#374151', marginBottom: 4 };
 const inputStyle = { width: '100%', padding: '9px 12px', border: '1px solid #d1d5db', borderRadius: 6, fontSize: 13, boxSizing: 'border-box', outline: 'none' };

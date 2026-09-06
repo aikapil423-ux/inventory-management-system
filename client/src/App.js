@@ -1,20 +1,21 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, lazy, Suspense } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { loadUser } from './redux/slices/authSlice';
 import Layout from './components/Layout';
-import Login from './pages/Login';
-import Dashboard from './pages/Dashboard';
-import Inventory from './pages/Inventory';
-import Items from './pages/Items';
-import Categories from './pages/Categories';
-import Transactions from './pages/Transactions';
-import Demands from './pages/Demands';
-import Inspections from './pages/Inspections';
-import Reports from './pages/Reports';
-import UserManagement from './pages/UserManagement';
-import ForgotPassword from './pages/ForgotPassword';
-import Signup from './pages/Signup';
+
+const Login = lazy(() => import('./pages/Login'));
+const Dashboard = lazy(() => import('./pages/Dashboard'));
+const Inventory = lazy(() => import('./pages/Inventory'));
+const Items = lazy(() => import('./pages/Items'));
+const Categories = lazy(() => import('./pages/Categories'));
+const Transactions = lazy(() => import('./pages/Transactions'));
+const Demands = lazy(() => import('./pages/Demands'));
+const Inspections = lazy(() => import('./pages/Inspections'));
+const Reports = lazy(() => import('./pages/Reports'));
+const UserManagement = lazy(() => import('./pages/UserManagement'));
+const ForgotPassword = lazy(() => import('./pages/ForgotPassword'));
+const Signup = lazy(() => import('./pages/Signup'));
 
 function ProtectedRoute({ children }) {
   const { isAuthenticated, loading } = useSelector(state => state.auth);
@@ -30,6 +31,10 @@ function AdminRoute({ children }) {
   return children;
 }
 
+function Page({ children }) {
+  return <Suspense fallback={<div style={{ textAlign: 'center', padding: '60px', fontSize: 15, color: '#666' }}>Loading...</div>}>{children}</Suspense>;
+}
+
 export default function App() {
   const dispatch = useDispatch();
   const { token } = useSelector(state => state.auth);
@@ -38,22 +43,24 @@ export default function App() {
     if (token) dispatch(loadUser());
   }, [dispatch, token]);
 
+  const R = (path, el) => <Route key={path} path={path} element={<Page>{el}</Page>} />;
+
   return (
     <Routes>
-      <Route path="/login" element={<Login />} />
-      <Route path="/forgot-password" element={<ForgotPassword />} />
-      <Route path="/signup" element={<Signup />} />
+      {R('/login', <Login />)}
+      {R('/forgot-password', <ForgotPassword />)}
+      {R('/signup', <Signup />)}
       <Route path="/" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
         <Route index element={<Navigate to="/dashboard" />} />
-        <Route path="dashboard" element={<Dashboard />} />
-        <Route path="inventory" element={<Inventory />} />
-        <Route path="items" element={<Items />} />
-        <Route path="categories" element={<Categories />} />
-        <Route path="transactions" element={<Transactions />} />
-        <Route path="demands" element={<Demands />} />
-        <Route path="inspections" element={<Inspections />} />
-        <Route path="reports" element={<Reports />} />
-        <Route path="admin/users" element={<AdminRoute><UserManagement /></AdminRoute>} />
+        {R('dashboard', <Dashboard />)}
+        {R('inventory', <Inventory />)}
+        {R('items', <Items />)}
+        {R('categories', <Categories />)}
+        {R('transactions', <Transactions />)}
+        {R('demands', <Demands />)}
+        {R('inspections', <Inspections />)}
+        {R('reports', <Reports />)}
+        <Route path="admin/users" element={<AdminRoute><Page><UserManagement /></Page></AdminRoute>} />
       </Route>
       <Route path="*" element={<Navigate to="/dashboard" />} />
     </Routes>
