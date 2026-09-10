@@ -65,8 +65,8 @@ export default function Transactions() {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
         <h1 style={{ fontSize: 22, fontWeight: 700, color: '#1e293b' }}>Transactions</h1>
         <button onClick={() => setShowModal(true)}
-          style={{ padding: '10px 16px', backgroundColor: '#2563eb', color: '#fff', border: 'none', borderRadius: 8, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 500 }}>
-          <FaPlus /> New Transaction
+          style={{ padding: '10px 20px', backgroundColor: '#2563eb', color: '#fff', border: 'none', borderRadius: 9999, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, fontWeight: 600, boxShadow: '0 2px 8px rgba(37,99,235,0.3)', transition: 'all 0.2s ease' }}>
+          <FaPlus /> Raise Transaction
         </button>
       </div>
 
