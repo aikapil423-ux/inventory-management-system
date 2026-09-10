@@ -30,3 +30,5 @@ Thumbs.db
 # MongoDB installers
 mongodb.msi
 mongodb.zip
+.vercel
+.env*

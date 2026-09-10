@@ -25,12 +25,22 @@ var __bootPromise = Promise.resolve();
 
 function __api(method, path, body) {
   const url = CONFIG.apiBase + "/api/" + path;
-  const opts = { method, headers: { "Content-Type": "application/json" } };
+  const headers = { "Content-Type": "application/json" };
+  const token = __authToken();
+  if (token) headers["Authorization"] = "Bearer " + token;
+  const opts = { method, headers };
   if (body !== undefined) opts.body = JSON.stringify(body);
   return fetch(url, opts).then(r => {
     if (!r.ok) throw new Error(method + " " + path + " -> " + r.status);
     return r.json();
   });
+}
+
+function __authToken() {
+  try {
+    const a = JSON.parse(localStorage.getItem(__prefix + "auth"));
+    return a && a.token ? a.token : null;
+  } catch { return null; }
 }
 
 // Fetch full state from Neon into local cache.
@@ -47,7 +57,13 @@ function __apiPersist() {
   __apiSaveTimer = setTimeout(() => {
     __apiQueue = __apiQueue.then(() =>
       __api("POST", "state", { state: JSON.parse(JSON.stringify(__apiCache)) })
-    ).catch(e => console.error("save to Neon failed:", e));
+    ).then(res => {
+      // Server returns the sanitised users (passwords hashed & stripped);
+      // refresh the cache so no plaintext lingers in browser memory.
+      if (res && Array.isArray(res.users)) {
+        __apiCache[__prefix + "users"] = res.users;
+      }
+    }).catch(e => console.error("save to Neon failed:", e));
   }, 400);
 }
 

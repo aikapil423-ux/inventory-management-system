@@ -3,9 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Haryana Police — Inventory Management System</title>
-  <link rel="stylesheet" href="styles.css">
+  <title>Haryana Police â€” Inventory Management System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=2026.09.24">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect rx='15' width='100' height='100' fill='%231e3a5f'/><text x='50' y='65' font-family='Arial,sans-serif' font-size='40' font-weight='bold' fill='%23ffd700' text-anchor='middle'>HP</text></svg>">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5.1.0/dist/tesseract.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" defer></script>
 </head>
 <body>
 
@@ -14,11 +23,15 @@
   <div class="login-card">
     <div class="login-emblem">
       <div class="emblem-shield">
-        <img src="C:\Users\HP\Desktop\Haryana-police-logo.png" alt="Haryana Police" style="width:80px;height:90px;object-fit:contain;">
+        <img src="logo.jpg" alt="Haryana Police" style="width:80px;height:90px;object-fit:contain;">
       </div>
     </div>
     <h1 class="login-title">Haryana Police</h1>
     <p class="login-subtitle">Inventory Management System</p>
+    <div class="quick-login hidden" id="quickLogin">
+      <div class="quick-login-label">Quick Login</div>
+      <div class="quick-login-list" id="quickLoginList"></div>
+    </div>
     <form id="loginForm" autocomplete="off">
       <div class="form-group">
         <label for="loginUser">Username</label>
@@ -33,6 +46,12 @@
           </button>
         </div>
       </div>
+      <div class="login-remember">
+        <label class="checkbox-label">
+          <input type="checkbox" id="rememberMe" checked>
+          <span>Remember me</span>
+        </label>
+      </div>
       <p class="login-error hidden" id="loginError">Invalid username or password</p>
       <button type="submit" class="btn btn-primary btn-block" id="loginBtn">
         <span class="btn-text">Sign In</span>
@@ -45,10 +64,7 @@
       </div>
     </form>
     <div class="login-footer">
-      <p class="login-hint"><strong>Developer Admin:</strong> developer / dev@123</p>
-      <p class="login-hint"><strong>Gurugram Admin:</strong> admin / admin123</p>
-      <p class="login-hint"><strong>Faridabad Admin:</strong> admin2 / admin123</p>
-      <p class="login-hint"><strong>Staff:</strong> user / user123 | fbd_user / user123</p>
+      <p class="login-hint">Authorized personnel only. Contact your system administrator for access.</p>
     </div>
   </div>
 </div>
@@ -59,14 +75,14 @@
   <!-- LEFT SIDEBAR -->
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-brand">
-      <img src="C:\Users\HP\Desktop\Haryana-police-logo.png" alt="Haryana Police" class="sidebar-logo">
+      <img src="logo.jpg" alt="Haryana Police" class="sidebar-logo">
       <div class="sidebar-brand-text">
         <h1>Haryana Police</h1>
         <p>Inventory System</p>
       </div>
     </div>
     <div class="sidebar-collapsed-logo">
-      <img src="C:\Users\HP\Desktop\Haryana-police-logo.png" alt="HP" class="collapsed-shield">
+      <img src="logo.jpg" alt="HP" class="collapsed-shield">
     </div>
 
     <nav class="sidebar-nav" id="sidebarNav">
@@ -78,17 +94,22 @@
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
         <span>Inventory</span>
       </button>
-      <button class="sidebar-link" data-tab="transactions">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+<button class="sidebar-link" data-tab="transactions">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 4H3a1 1 0 00-1 1v14a1 1 0 001 1h18a1 1 0 001-1V5a1 1 0 00-1-1zM1 10h12M7 15h2"/></svg>
         <span>Transactions</span>
       </button>
-      <button class="sidebar-link" data-tab="demands">
+<button class="sidebar-link" data-tab="demands">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 1.66 2.69 3 6 3s6-1.34 6-3v-5"/></svg>
         <span>Demands</span>
+        <span class="demand-dot" id="demandDot" style="display:none" title="New demand assigned to you"></span>
       </button>
       <button class="sidebar-link" data-tab="inspections">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/><path d="M9 14l2 2 4-4"/></svg>
         <span>Inspections</span>
+      </button>
+      <button class="sidebar-link" data-tab="allotments">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+        <span>Allotments</span>
       </button>
       <button class="sidebar-link" data-tab="reports">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
@@ -102,6 +123,7 @@
         <div class="sidebar-user-info">
           <span class="sidebar-user-name" id="sidebarUserName">Admin</span>
           <span class="sidebar-user-role" id="sidebarUserRole">District Admin</span>
+          <span class="sidebar-version" id="appVersion"></span>
         </div>
       </div>
     </div>
@@ -139,8 +161,10 @@
           <button class="btn btn-sm btn-gold" id="manageDistrictsBtn" data-dev-only title="Manage Districts">Districts</button>
           <button class="btn btn-sm btn-outline-light" id="manageUsersBtn" data-admin-only title="Manage Users">Users</button>
           <span class="district-badge" id="districtBadge"></span>
-          <span class="user-role-badge" id="userRoleBadge"></span>
-          <span class="user-display-name" id="userDisplayName"></span>
+          <div class="user-id-block">
+            <span class="user-id-name" id="userDisplayName"></span>
+            <span class="user-id-role" id="userRoleBadge"></span>
+          </div>
           <button class="btn btn-sm btn-outline-light" id="logoutBtn">Logout</button>
         </div>
       </div>
@@ -157,7 +181,7 @@
       </div>
 
       <div class="stats-grid" id="statsGrid">
-        <div class="stat-card stat-total">
+        <div class="stat-card clickable stat-total">
           <div class="stat-icon">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
           </div>
@@ -166,7 +190,7 @@
             <span class="stat-label">Total Items</span>
           </div>
         </div>
-        <div class="stat-card stat-stock">
+        <div class="stat-card clickable stat-stock">
           <div class="stat-icon">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
           </div>
@@ -175,7 +199,7 @@
             <span class="stat-label">Total Quantity</span>
           </div>
         </div>
-        <div class="stat-card stat-low">
+        <div class="stat-card clickable stat-low">
           <div class="stat-icon">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
           </div>
@@ -184,7 +208,7 @@
             <span class="stat-label">Low Stock Alerts</span>
           </div>
         </div>
-        <div class="stat-card stat-categories">
+        <div class="stat-card clickable stat-categories">
           <div class="stat-icon">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
           </div>
@@ -193,7 +217,7 @@
             <span class="stat-label">Categories</span>
           </div>
         </div>
-        <div class="stat-card stat-damaged">
+        <div class="stat-card clickable stat-damaged">
           <div class="stat-icon">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
           </div>
@@ -202,7 +226,7 @@
             <span class="stat-label">Damaged</span>
           </div>
         </div>
-        <div class="stat-card stat-fair">
+        <div class="stat-card clickable stat-fair">
           <div class="stat-icon">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
           </div>
@@ -211,7 +235,7 @@
             <span class="stat-label">Fair</span>
           </div>
         </div>
-        <div class="stat-card stat-poor">
+        <div class="stat-card clickable stat-poor">
           <div class="stat-icon">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
           </div>
@@ -220,7 +244,7 @@
             <span class="stat-label">Poor</span>
           </div>
         </div>
-        <div class="stat-card stat-good">
+        <div class="stat-card clickable stat-good">
           <div class="stat-icon">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg>
           </div>
@@ -229,7 +253,7 @@
             <span class="stat-label">Good</span>
           </div>
         </div>
-        <div class="stat-card stat-new">
+        <div class="stat-card clickable stat-new">
           <div class="stat-icon">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
           </div>
@@ -279,22 +303,51 @@
         <h2>Inventory</h2>
         <div class="page-actions">
           <button class="btn btn-primary" id="addItemBtn">+ Add Item</button>
-          <button class="btn btn-outline" id="manageCatsBtn" data-admin-only>Manage Categories</button>
+          <button class="btn btn-outline" id="scanOpenBtn2">Scan &amp; Import</button>
+          <button class="btn btn-outline" id="scanHistoryBtn2">Scans</button>
+          <button class="btn btn-outline" id="manageCatsBtn">Manage Categories</button>
         </div>
       </div>
 
       <div class="toolbar">
-        <input type="text" id="searchInput" placeholder="Search items...">
-        <select id="categoryFilter"><option value="">All Categories</option></select>
-        <select id="locationFilter"><option value="">All Locations</option></select>
-        <select id="conditionFilter">
-          <option value="">All Conditions</option>
-          <option value="new">New</option>
-          <option value="good">Good</option>
-          <option value="fair">Fair</option>
-          <option value="poor">Poor</option>
-          <option value="damaged">Damaged</option>
-        </select>
+        <span class="cb cb-wide">
+          <input type="text" id="searchInput" class="cb-input" placeholder="Search items..." autocomplete="off">
+          <span class="cb-menu hidden" id="searchCbMenu"></span>
+        </span>
+        <span class="cb">
+          <input type="text" class="cb-input" id="categoryCbInput" placeholder="All Categories" autocomplete="off">
+          <span class="cb-menu hidden" id="categoryCbMenu"></span>
+          <select id="categoryFilter" class="cb-hidden-sel"><option value="">All Categories</option></select>
+        </span>
+        <span class="cb">
+          <input type="text" class="cb-input" id="locationCbInput" placeholder="All Locations" autocomplete="off">
+          <span class="cb-menu hidden" id="locationCbMenu"></span>
+          <select id="locationFilter" class="cb-hidden-sel"><option value="">All Locations</option></select>
+        </span>
+        <span class="cb">
+          <input type="text" class="cb-input" id="conditionCbInput" placeholder="All Conditions" autocomplete="off">
+          <span class="cb-menu hidden" id="conditionCbMenu"></span>
+          <select id="conditionFilter" class="cb-hidden-sel">
+            <option value="">All Conditions</option>
+            <option value="new">New</option>
+            <option value="good">Good</option>
+            <option value="fair">Fair</option>
+            <option value="poor">Poor</option>
+            <option value="damaged">Damaged</option>
+          </select>
+        </span>
+        <input type="date" id="itemDateFrom" title="Date Added From">
+        <input type="date" id="itemDateTo" title="Date Added To">
+        <button class="btn btn-sm btn-outline" id="clearInvFilter">Clear</button>
+        <div class="stat-export-dd stat-export-dd-right">
+          <button class="btn btn-sm btn-outline" id="invExportBtn">Download / Print <span class="ee-caret">&#9662;</span></button>
+          <div class="stat-export-menu hidden" id="invExportMenu">
+            <button data-export="pdf"><span class="ee-ic">&#128196;</span> Download PDF</button>
+            <button data-export="excel"><span class="ee-ic">&#128229;</span> Download Excel</button>
+            <button data-export="word"><span class="ee-ic">&#128220;</span> Download Word</button>
+            <button data-export="print"><span class="ee-ic">&#128424;</span> Print</button>
+          </div>
+        </div>
       </div>
 
       <div class="cat-pills" id="catPills"></div>
@@ -303,7 +356,7 @@
         <div class="table-wrap">
           <table>
             <thead>
-              <tr><th>Item Name</th><th>Category</th><th>Quantity</th><th>Unit</th><th>Min Stock</th><th>Location</th><th>Condition</th><th>Status</th><th>Actions</th></tr>
+              <tr><th>Item Name</th><th>Category</th><th>Quantity</th><th>Unit</th><th>Min Stock</th><th>Location</th><th>Condition</th><th>Status</th><th>Date Added</th><th>Actions</th></tr>
             </thead>
             <tbody id="inventoryBody"></tbody>
           </table>
@@ -321,8 +374,9 @@
       </div>
 
       <div class="toolbar">
-        <input type="date" id="transDateFrom">
-        <input type="date" id="transDateTo">
+        <input type="text" id="transSearch" placeholder="Search by item / district / unit...">
+        <label class="filter-date"><span>From:</span><input type="date" id="transDateFrom"></label>
+        <label class="filter-date"><span>To:</span><input type="date" id="transDateTo"></label>
         <select id="transTypeFilter">
           <option value="">All Types</option>
           <option value="add">Addition</option>
@@ -330,13 +384,22 @@
           <option value="transfer">Transfer</option>
         </select>
         <button class="btn btn-outline" id="clearTransFilter">Clear</button>
+        <div class="stat-export-dd stat-export-dd-right">
+          <button class="btn btn-sm btn-outline" id="transExportBtn">Download / Print <span class="ee-caret">&#9662;</span></button>
+          <div class="stat-export-menu hidden" id="transExportMenu">
+            <button data-export="pdf"><span class="ee-ic">&#128196;</span> Download PDF</button>
+            <button data-export="excel"><span class="ee-ic">&#128229;</span> Download Excel</button>
+            <button data-export="word"><span class="ee-ic">&#128220;</span> Download Word</button>
+            <button data-export="print"><span class="ee-ic">&#128424;</span> Print</button>
+          </div>
+        </div>
       </div>
 
       <div class="card">
         <div class="table-wrap">
           <table>
             <thead>
-              <tr><th>Date</th><th>Item</th><th>Type</th><th>Quantity</th><th>From</th><th>To</th><th>Performed By</th><th>Notes</th></tr>
+              <tr><th>Date</th><th>Item</th><th>Type</th><th>Quantity</th><th>From</th><th>To</th><th>Performed By</th><th>Notes</th><th>Actions</th></tr>
             </thead>
             <tbody id="transBody"></tbody>
           </table>
@@ -354,7 +417,7 @@
       </div>
 
       <div class="stats-grid" id="demandStats">
-        <div class="stat-card stat-total">
+        <div class="stat-card clickable stat-total" data-demand-key="total" title="Click to view all demands">
           <div class="stat-icon">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 1.66 2.69 3 6 3s6-1.34 6-3v-5"/></svg>
           </div>
@@ -363,7 +426,7 @@
             <span class="stat-label">Total Demands</span>
           </div>
         </div>
-        <div class="stat-card stat-low">
+        <div class="stat-card clickable stat-low" data-demand-key="pending" title="Click to view pending demands">
           <div class="stat-icon">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
           </div>
@@ -372,7 +435,7 @@
             <span class="stat-label">Pending</span>
           </div>
         </div>
-        <div class="stat-card stat-stock">
+        <div class="stat-card clickable stat-stock" data-demand-key="approved" title="Click to view approved demands">
           <div class="stat-icon">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg>
           </div>
@@ -381,7 +444,7 @@
             <span class="stat-label">Approved</span>
           </div>
         </div>
-        <div class="stat-card stat-categories">
+        <div class="stat-card clickable stat-categories" data-demand-key="rejected" title="Click to view rejected demands">
           <div class="stat-icon">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
           </div>
@@ -400,6 +463,18 @@
           <option value="approved">Approved</option>
           <option value="rejected">Rejected</option>
         </select>
+        <label class="filter-date"><span>From:</span><input type="date" id="demandDateFrom"></label>
+        <label class="filter-date"><span>To:</span><input type="date" id="demandDateTo"></label>
+        <button class="btn btn-outline" id="clearDemandFilter">Clear</button>
+        <div class="stat-export-dd">
+          <button class="btn btn-sm btn-outline" id="demandExportBtn">Download / Print <span class="ee-caret">&#9662;</span></button>
+          <div class="stat-export-menu hidden" id="demandExportMenu">
+            <button data-export="pdf"><span class="ee-ic">&#128196;</span> Download PDF</button>
+            <button data-export="excel"><span class="ee-ic">&#128229;</span> Download Excel</button>
+            <button data-export="word"><span class="ee-ic">&#128220;</span> Download Word</button>
+            <button data-export="print"><span class="ee-ic">&#128424;</span> Print</button>
+          </div>
+        </div>
       </div>
 
       <div class="card">
@@ -424,7 +499,7 @@
       </div>
 
       <div class="stats-grid" id="inspectionStats">
-        <div class="stat-card stat-total">
+        <div class="stat-card clickable stat-total" data-insp-key="total" title="Click to view all inspections">
           <div class="stat-icon">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
           </div>
@@ -433,7 +508,7 @@
             <span class="stat-label">Total Inspections</span>
           </div>
         </div>
-        <div class="stat-card stat-stock">
+        <div class="stat-card clickable stat-stock" data-insp-key="completed" title="Click to view completed inspections">
           <div class="stat-icon">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg>
           </div>
@@ -442,7 +517,7 @@
             <span class="stat-label">Completed</span>
           </div>
         </div>
-        <div class="stat-card stat-low">
+        <div class="stat-card clickable stat-low" data-insp-key="pending" title="Click to view pending inspections">
           <div class="stat-icon">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
           </div>
@@ -451,7 +526,7 @@
             <span class="stat-label">Pending</span>
           </div>
         </div>
-        <div class="stat-card stat-categories">
+        <div class="stat-card clickable stat-categories" data-insp-key="overdue" title="Click to view overdue inspections">
           <div class="stat-icon">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
           </div>
@@ -476,16 +551,145 @@
           <option value="pending">Pending</option>
           <option value="overdue">Overdue</option>
         </select>
+        <div class="stat-export-dd">
+          <button class="btn btn-sm btn-outline" id="inspExportBtn">Download / Print <span class="ee-caret">&#9662;</span></button>
+          <div class="stat-export-menu hidden" id="inspExportMenu">
+            <button data-export="pdf"><span class="ee-ic">&#128196;</span> Download PDF</button>
+            <button data-export="excel"><span class="ee-ic">&#128229;</span> Download Excel</button>
+            <button data-export="word"><span class="ee-ic">&#128220;</span> Download Word</button>
+            <button data-export="print"><span class="ee-ic">&#128424;</span> Print</button>
+          </div>
+        </div>
       </div>
 
       <div class="card">
         <div class="table-wrap">
           <table>
             <thead>
-              <tr><th>Date</th><th>Item / Asset</th><th>Inspected By</th><th>Type</th><th>Location</th><th>Findings</th><th>Recommendations</th><th>Status</th><th>Actions</th></tr>
+              <tr><th>Date</th><th>Item / Asset</th><th>Inspected By</th><th>Type</th><th>Location</th><th>Findings</th><th>Recommendations</th><th>Status</th></tr>
             </thead>
             <tbody id="inspBody"></tbody>
           </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== ALLOTMENTS VIEW ========== -->
+    <section id="view-allotments" class="view hidden">
+      <div class="page-header">
+        <h2>Allotments</h2>
+        <div class="page-actions">
+          <button class="btn btn-primary" id="allocOpenBtn">+ Allot Item</button>
+          <button class="btn btn-outline" id="scanOpenBtn">Scan &amp; Import</button>
+          <button class="btn btn-outline" id="scanHistoryBtn">Scans</button>
+          <button class="btn btn-outline" id="allocAddStockBtn">+ Add Stock</button>
+        </div>
+      </div>
+
+      <div class="report-tabs">
+        <button class="report-tab active" data-atab="stock">Item Stock</button>
+        <button class="report-tab" data-atab="allotted">Allotted Items</button>
+        <button class="report-tab" data-atab="returns">Return History</button>
+      </div>
+
+      <!-- allot tab: stock -->
+      <div class="alloc-tab" data-alloc-tab="stock">
+        <div class="toolbar">
+          <input type="text" id="allocStockSearch" placeholder="Search by item, category, unit or location...">
+          <select id="allocStockCat"><option value="">All Categories</option></select>
+          <select id="allocStockType">
+            <option value="all">All Stock</option>
+            <option value="allotted">Only Allotted</option>
+            <option value="available">Only Available</option>
+          </select>
+          <button class="btn btn-sm btn-outline" id="allocStockAdjustBtn">Adjust Stock</button>
+          <div class="stat-export-dd stat-export-dd-right">
+            <button class="btn btn-sm btn-outline" id="allocStockExportBtn">Download / Print <span class="ee-caret">&#9662;</span></button>
+            <div class="stat-export-menu hidden" id="allocStockExportMenu">
+              <button data-export="pdf"><span class="ee-ic">&#128196;</span> Download PDF</button>
+              <button data-export="excel"><span class="ee-ic">&#128229;</span> Download Excel</button>
+              <button data-export="word"><span class="ee-ic">&#128220;</span> Download Word</button>
+              <button data-export="print"><span class="ee-ic">&#128424;</span> Print</button>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="table-wrap">
+            <table id="allocStockTable">
+              <thead>
+                <tr><th style="width:54px">S.No</th><th class="sortable" data-sort="name">Item Name <span class="sort-arrow"></span></th><th class="sortable" data-sort="category">Category <span class="sort-arrow"></span></th><th class="sortable" data-sort="total">Total Qty <span class="sort-arrow"></span></th><th class="sortable" data-sort="available">Available <span class="sort-arrow"></span></th><th class="sortable" data-sort="allotted">Allotted <span class="sort-arrow"></span></th><th class="sortable" data-sort="status">Status <span class="sort-arrow"></span></th><th>Actions</th></tr>
+              </thead>
+              <tbody id="allocStockBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- allot tab: allotted -->
+      <div class="alloc-tab hidden" data-alloc-tab="allotted">
+        <div class="toolbar">
+          <input type="text" id="allocSearch" placeholder="Search name / belt / item / posting / rank...">
+          <select id="allocCatFilter"><option value="">All Categories</option></select>
+          <select id="allocItemFilter"><option value="">All Items</option></select>
+          <input type="text" id="allocPostingFilter" placeholder="Posting...">
+          <select id="allocRankFilter"><option value="">All Ranks</option></select>
+          <select id="allocStatusFilter">
+            <option value="">All Status</option>
+            <option value="ALLOTTED">Allotted</option>
+            <option value="PARTIALLY_RETURNED">Partially Returned</option>
+            <option value="RETURNED">Returned</option>
+            <option value="LOST">Lost</option>
+            <option value="DAMAGED">Damaged</option>
+            <option value="CANCELLED">Cancelled</option>
+          </select>
+          <input type="date" id="allocDateFrom" title="From date">
+          <input type="date" id="allocDateTo" title="To date">
+          <button class="btn btn-sm btn-outline" id="allocClearFilter">Clear</button>
+          <div class="stat-export-dd stat-export-dd-right">
+            <button class="btn btn-sm btn-outline" id="allocExportBtn">Download / Print <span class="ee-caret">&#9662;</span></button>
+            <div class="stat-export-menu hidden" id="allocExportMenu">
+              <button data-export="pdf"><span class="ee-ic">&#128196;</span> Download PDF</button>
+              <button data-export="excel"><span class="ee-ic">&#128229;</span> Download Excel</button>
+              <button data-export="word"><span class="ee-ic">&#128220;</span> Download Word</button>
+              <button data-export="print"><span class="ee-ic">&#128424;</span> Print</button>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>S.No</th><th>Name</th><th>Post/Rank</th><th>BELT No.</th><th>Posting</th><th>Item</th><th>Category</th><th>Qty</th><th>Date</th><th>Time</th><th>Status</th><th>Actions</th></tr>
+              </thead>
+              <tbody id="allocBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- allot tab: returns -->
+      <div class="alloc-tab hidden" data-alloc-tab="returns">
+        <div class="toolbar">
+          <input type="text" id="allocRetSearch" placeholder="Search return history...">
+          <div class="stat-export-dd stat-export-dd-right">
+            <button class="btn btn-sm btn-outline" id="allocRetExportBtn">Download / Print <span class="ee-caret">&#9662;</span></button>
+            <div class="stat-export-menu hidden" id="allocRetExportMenu">
+              <button data-export="pdf"><span class="ee-ic">&#128196;</span> Download PDF</button>
+              <button data-export="excel"><span class="ee-ic">&#128229;</span> Download Excel</button>
+              <button data-export="word"><span class="ee-ic">&#128220;</span> Download Word</button>
+              <button data-export="print"><span class="ee-ic">&#128424;</span> Print</button>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>S.No</th><th>Person</th><th>BELT No.</th><th>Item</th><th>Qty Returned</th><th>Condition</th><th>Return Date</th><th>Return Time</th><th>Received By</th><th>Remarks</th></tr>
+              </thead>
+              <tbody id="allocRetBody"></tbody>
+            </table>
+          </div>
         </div>
       </div>
     </section>
@@ -494,9 +698,6 @@
     <section id="view-reports" class="view hidden">
       <div class="page-header">
         <h2>Reports</h2>
-        <div class="page-actions">
-          <button class="btn btn-outline" id="exportCSVBtn">Export CSV</button>
-        </div>
       </div>
 
       <div class="report-tabs">
@@ -505,18 +706,111 @@
         <button class="report-tab" data-rtab="locationReport">Location Report</button>
       </div>
 
+      <div class="toolbar">
+        <input type="text" id="reportSearch" placeholder="Search reports...">
+        <div class="stat-export-dd">
+          <button class="btn btn-sm btn-outline" id="reportExportBtn">Download / Print <span class="ee-caret">&#9662;</span></button>
+          <div class="stat-export-menu hidden" id="reportExportMenu">
+            <button data-export="pdf"><span class="ee-ic">&#128196;</span> Download PDF</button>
+            <button data-export="excel"><span class="ee-ic">&#128229;</span> Download Excel</button>
+            <button data-export="word"><span class="ee-ic">&#128220;</span> Download Word</button>
+            <button data-export="print"><span class="ee-ic">&#128424;</span> Print</button>
+          </div>
+        </div>
+      </div>
+
       <div id="reportContent" class="card"></div>
     </section>
 
   </main>
 
   <footer class="site-footer">
-    <p>&copy; 2026 Haryana Police — Inventory Management System. All rights reserved.</p>
+    <p>&copy; 2026 Haryana Police â€” Inventory Management System. All rights reserved.</p>
   </footer>
   </div><!-- end content-area -->
 </div>
 
 <!-- ==================== MODALS ==================== -->
+
+<!-- Scan & Import Modal -->
+<div class="modal-backdrop hidden" id="scanModal">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <h2>Scan &amp; Import</h2>
+      <button class="modal-close" data-close>&times;</button>
+    </div>
+    <div id="scanStepInput">
+      <h4 class="modal-sec-title">1 &middot; Upload Document</h4>
+      <div id="scanDropZone" class="scan-drop">
+        <div class="scan-drop-title">Click to choose or drag &amp; drop a file</div>
+        <div class="scan-drop-sub">JPG &middot; PNG &middot; PDF &middot; Word (DOCX) &middot; Excel (XLSX) &middot; TXT / CSV &mdash; scanned in your browser, uploaded only after your verification</div>
+        <input type="file" id="scanFileInput" accept=".jpg,.jpeg,.png,.webp,.bmp,.pdf,.docx,.xlsx,.xls,.csv,.txt,image/*,application/pdf" hidden>
+      </div>
+      <div id="scanChosenFile" class="scan-chosen hidden">
+        <b id="scanFileName"></b>
+        <button type="button" class="btn btn-sm btn-outline" id="scanFileClear">Remove</button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" data-close>Cancel</button>
+        <button type="button" class="btn btn-primary" id="scanExtractBtn" disabled>Scan Document</button>
+      </div>
+    </div>
+    <div id="scanStepProgress" class="hidden">
+      <div class="scan-progress">
+        <div class="spinner"></div>
+        <div id="scanProgressText">Reading document&hellip;</div>
+      </div>
+    </div>
+    <div id="scanStepReview" class="hidden">
+      <h4 class="modal-sec-title">2 &middot; Review &amp; Verify <span class="modal-sec-hint">each table row is auto-filled as one person &mdash; correct everything before inserting</span></h4>
+      <div id="scanPeople"></div>
+      <div class="alloc-items-actions">
+        <button type="button" class="btn btn-sm btn-outline" id="scanAddPersonBtn">+ Add Person</button>
+        <span class="alloc-items-note" id="scItemsSummary"></span>
+      </div>
+      <details class="scan-raw">
+        <summary>Raw extracted text</summary>
+        <pre id="scanRawText"></pre>
+      </details>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" data-close>Cancel</button>
+        <button type="button" class="btn btn-outline" id="scanRescanBtn">Start Over</button>
+        <button type="button" class="btn btn-primary" id="scanCommitBtn">Verify &amp; Insert Data</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Scan History Modal -->
+<div class="modal-backdrop hidden" id="scanHistoryModal">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <h2>Scanned Documents</h2>
+      <button class="modal-close" data-close>&times;</button>
+    </div>
+    <div class="card">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>File</th><th>Format</th><th>Person</th><th>Items</th><th>Date</th><th>Verified By</th><th></th></tr>
+          </thead>
+          <tbody id="scanHistoryBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Scan File Viewer Modal -->
+<div class="modal-backdrop hidden" id="scanViewModal">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <h2 id="scanViewTitle">Document</h2>
+      <button class="modal-close" data-close>&times;</button>
+    </div>
+    <div id="scanViewBody" class="scan-view"></div>
+  </div>
+</div>
 
 <!-- Add/Edit Item Modal -->
 <div class="modal-backdrop hidden" id="itemModal">
@@ -601,45 +895,105 @@
 
 <!-- New Transaction Modal -->
 <div class="modal-backdrop hidden" id="transModal">
-  <div class="modal">
+  <div class="modal modal-lg">
     <div class="modal-header">
-      <h2>New Transaction</h2>
+      <h2 id="transModalTitle">New Transaction</h2>
       <button class="modal-close" data-close>&times;</button>
     </div>
     <form id="transForm">
-      <div class="form-group">
-        <label for="tItem">Select Item</label>
-        <select id="tItem" required></select>
+      <div class="form-row two-col">
+        <div class="form-group">
+          <label for="tCategory">Item Category *</label>
+          <select id="tCategory" required></select>
+        </div>
+        <div class="form-group">
+          <label for="tType">Transaction Type *</label>
+          <select id="tType" required>
+            <option value="add">Addition (Restock)</option>
+            <option value="remove">Removal (Issue / Distribute)</option>
+            <option value="transfer">Transfer (Between Locations / Units)</option>
+          </select>
+        </div>
       </div>
-      <div class="form-group">
-        <label for="tType">Transaction Type</label>
-        <select id="tType" required>
-          <option value="add">Addition (Restock)</option>
-          <option value="remove">Removal (Issue/Distribute)</option>
-          <option value="transfer">Transfer (Between Locations)</option>
-        </select>
+      <div class="form-row two-col">
+        <div class="form-group">
+          <label for="tItemName">Item Name *</label>
+          <input type="text" id="tItemName" required placeholder="Type item name..." autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label for="tItem">Or pick from inventory</label>
+          <select id="tItem"><option value="">-- select --</option></select>
+        </div>
       </div>
-      <div class="form-group">
-        <label for="tQuantity">Quantity</label>
-        <input type="number" id="tQuantity" min="1" required placeholder="0">
+      <div class="form-row two-col">
+        <div class="form-group">
+          <label for="tQuantity">Quantity *</label>
+          <input type="number" id="tQuantity" min="1" required value="1" placeholder="0">
+        </div>
+        <div class="form-group">
+          <label for="tCondition">Condition</label>
+          <select id="tCondition">
+            <option value="good">Good</option>
+            <option value="new">New</option>
+            <option value="fair">Fair</option>
+            <option value="poor">Poor</option>
+            <option value="damaged">Damaged</option>
+          </select>
+        </div>
       </div>
-      <div class="form-row">
+      <div class="form-row three-col" id="tLocationRow">
         <div class="form-group" id="tFromGroup">
-          <label for="tFrom">From Location</label>
+          <label for="tFrom">From Location / Unit</label>
           <select id="tFrom"></select>
         </div>
         <div class="form-group" id="tToGroup">
-          <label for="tTo">To Location</label>
+          <label for="tTo">To Location / Unit</label>
           <select id="tTo"></select>
+        </div>
+        <div class="form-group" id="tAssigneeGroup">
+          <label for="tAssignee">Action By / Officer</label>
+          <select id="tAssignee">
+            <option value="">Select user</option>
+          </select>
         </div>
       </div>
       <div class="form-group">
-        <label for="tNotes">Notes (optional)</label>
-        <input type="text" id="tNotes" placeholder="e.g. Monthly restock">
+        <label for="tNotes">Reason / Notes</label>
+        <textarea id="tNotes" rows="2" placeholder="e.g. Monthly restock, issued to personnel, transfer order..."></textarea>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-outline" data-close>Cancel</button>
-        <button type="submit" class="btn btn-primary">Record Transaction</button>
+        <button type="submit" class="btn btn-primary" id="transSaveBtn">Record Transaction</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Edit Transaction Modal -->
+<div class="modal-backdrop hidden" id="editTransModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Edit Transaction</h2>
+      <button class="modal-close" data-close>&times;</button>
+    </div>
+    <form id="editTransForm">
+      <div class="form-group">
+        <p class="page-subtitle" id="etSummary" style="margin:2px 0 8px"></p>
+      </div>
+      <div class="form-group">
+        <label for="etQuantity">New Quantity</label>
+        <input type="number" id="etQuantity" min="1" required placeholder="0">
+      </div>
+      <div class="form-group">
+        <label for="etNotes">New Notes</label>
+        <input type="text" id="etNotes" placeholder="Reason / correction">
+      </div>
+      <div class="form-group">
+        <p class="page-subtitle" id="etApproverInfo" style="margin:2px 0 0;color:var(--green)"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" data-close>Cancel</button>
+        <button type="submit" class="btn btn-primary" id="etSubmitBtn">Submit for Approval</button>
       </div>
     </form>
   </div>
@@ -734,28 +1088,28 @@
       <h2 id="demandModalTitle">Raise New Demand</h2>
       <button class="modal-close" data-close>&times;</button>
     </div>
-    <form id="demandForm">
+<form id="demandForm">
       <div class="form-row two-col">
-        <div class="form-group">
-          <label for="fdItemName">Item Name *</label>
-          <input type="text" id="fdItemName" required placeholder="Type item name..." autocomplete="off">
+<div class="form-group">
+          <label for="fdCategory">Item Category *</label>
+          <select id="fdCategory" required></select>
         </div>
-        <div class="form-group">
-          <label for="fdItemSelect">Or pick from inventory</label>
-          <select id="fdItemSelect"><option value="">-- select --</option></select>
-        </div>
-      </div>
-      <div class="form-row">
         <div class="form-group">
           <label for="fdQuantity">Quantity Required</label>
           <input type="number" id="fdQuantity" min="1" required value="1">
         </div>
       </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label for="fdCategory">Item Category</label>
-          <select id="fdCategory" required></select>
+      <div class="form-row two-col">
+<div class="form-group">
+          <label for="fdItemName">Item Name *</label>
+          <input type="text" id="fdItemName" required placeholder="Type item name..." autocomplete="off" disabled>
         </div>
+        <div class="form-group">
+          <label for="fdItemSelect">Or pick from inventory</label>
+          <select id="fdItemSelect" disabled><option value="">-- select --</option></select>
+        </div>
+      </div>
+      <div class="form-row two-col">
         <div class="form-group">
           <label for="fdCondition">Required Condition</label>
           <select id="fdCondition" required>
@@ -765,22 +1119,28 @@
             <option value="fair">Fair</option>
           </select>
         </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label for="fdDemandTo">Demand To (District)</label>
-          <select id="fdDemandTo" required></select>
-        </div>
-        <div class="form-group">
-          <label for="fdDemandToLocation">To Location / Unit</label>
-          <select id="fdDemandToLocation" required></select>
-        </div>
         <div class="form-group">
           <label for="fdUrgency">Urgency</label>
           <select id="fdUrgency">
             <option value="normal">Normal</option>
             <option value="urgent">Urgent</option>
             <option value="critical">Critical</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row three-col">
+        <div class="form-group">
+          <label for="fdDemandTo">Demand To (District)</label>
+          <select id="fdDemandTo" required></select>
+        </div>
+<div class="form-group">
+          <label for="fdDemandToLocation">To Location / Unit</label>
+          <select id="fdDemandToLocation" required></select>
+        </div>
+        <div class="form-group">
+          <label for="fdAssignee">Requested From (User) *</label>
+          <select id="fdAssignee" required>
+            <option value="">Select user</option>
           </select>
         </div>
       </div>
@@ -1043,10 +1403,282 @@
   </div>
 </div>
 
+<!-- Allot Item Modal -->
+<div class="modal-backdrop hidden" id="allotModal">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <h2 id="allotModalTitle">Allot Item</h2>
+      <button class="modal-close" data-close>&times;</button>
+    </div>
+    <form id="allotForm">
+      <h4 class="modal-sec-title">PERSON DETAILS</h4>
+      <div class="form-row">
+        <div class="form-group" id="alpPersonGroup" style="flex:2">
+          <label for="alPerson">Search Person</label>
+          <input type="text" id="alPerson" required placeholder="Type name or BELT No...">
+          <div class="person-suggest hidden" id="alPersonSuggest"></div>
+        </div>
+        <div class="form-group" style="flex:1">
+          <label for="alRank">Post / Rank</label>
+          <input type="text" id="alRank" required placeholder="e.g. HC">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="alBelt">BELT Number</label>
+          <input type="text" id="alBelt" required placeholder="e.g. BRLT12345">
+        </div>
+        <div class="form-group">
+          <label for="alPosting">Posting</label>
+          <input type="text" id="alPosting" required placeholder="e.g. PS DLF Phase 3">
+        </div>
+      </div>
+      <h4 class="modal-sec-title">ITEM DETAILS <span class="modal-sec-hint">(add one or more items â€” different categories &amp; quantities)</span></h4>
+      <div id="alItems" class="alloc-items"></div>
+      <div class="alloc-items-actions">
+        <button type="button" class="btn btn-sm btn-outline" id="alAddItemRow">+ Add Item</button>
+        <span class="alloc-items-note" id="alItemsSummary"></span>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="alDate">Date</label>
+          <input type="date" id="alDate" required>
+        </div>
+        <div class="form-group">
+          <label for="alTime">Time</label>
+          <input type="time" id="alTime" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="alRemarks">Remarks</label>
+        <input type="text" id="alRemarks" placeholder="Optional">
+      </div>
+      <input type="hidden" id="alEditId" value="">
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" data-close>Cancel</button>
+        <button type="submit" class="btn btn-primary" id="alSubmitBtn">Allot Item</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Return Item Modal -->
+<div class="modal-backdrop hidden" id="returnModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Return Item</h2>
+      <button class="modal-close" data-close>&times;</button>
+    </div>
+    <form id="returnForm">
+      <div class="return-summary" id="rtSummary"></div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="rtQty">Return Quantity</label>
+          <input type="number" id="rtQty" min="1" required>
+        </div>
+        <div class="form-group">
+          <label for="rtDate">Return Date</label>
+          <input type="date" id="rtDate" required>
+        </div>
+        <div class="form-group">
+          <label for="rtTime">Return Time</label>
+          <input type="time" id="rtTime" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="rtCondition">Condition On Return</label>
+        <select id="rtCondition" required>
+          <option value="good">Good</option>
+          <option value="damaged">Damaged</option>
+          <option value="lost">Lost</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="rtRemarks">Remarks</label>
+        <input type="text" id="rtRemarks" placeholder="Optional">
+      </div>
+      <input type="hidden" id="rtAllotId" value="">
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" data-close>Cancel</button>
+        <button type="submit" class="btn btn-primary">Save Return</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Adjust Stock Modal -->
+<div class="modal-backdrop hidden" id="adjustModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Adjust Stock</h2>
+      <button class="modal-close" data-close>&times;</button>
+    </div>
+    <form id="adjustForm">
+      <div class="form-group">
+        <label for="ajItem">Item</label>
+        <select id="ajItem" required></select>
+      </div>
+      <div class="form-group">
+        <label for="ajType">Adjustment Type</label>
+        <select id="ajType" required>
+          <option value="add">Stock Added</option>
+          <option value="correction">Stock Correction (Set Total)</option>
+          <option value="writeoff">Written Off</option>
+          <option value="damage">Mark Damaged</option>
+          <option value="loss">Mark Lost</option>
+        </select>
+      </div>
+      <div class="form-group" id="ajQtyGroup">
+        <label for="ajQty">Quantity</label>
+        <input type="number" id="ajQty" min="1" required>
+      </div>
+      <div class="form-group hidden" id="ajTotalGroup">
+        <label for="ajTotal">Corrected Total Quantity</label>
+        <input type="number" id="ajTotal" min="0" required>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="ajDate">Date</label>
+          <input type="date" id="ajDate" required>
+        </div>
+        <div class="form-group">
+          <label for="ajTime">Time</label>
+          <input type="time" id="ajTime" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="ajRemarks">Remarks</label>
+        <input type="text" id="ajRemarks" placeholder="Optional">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" data-close>Cancel</button>
+        <button type="submit" class="btn btn-primary">Apply Adjustment</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Item Detail Modal -->
+<div class="modal-backdrop hidden" id="allocItemDetailModal">
+  <div class="modal modal-xl">
+    <div class="modal-header">
+      <div>
+        <h2 id="aidTitle">Item Details</h2>
+        <p class="page-subtitle" id="aidSubtitle" style="margin-top:4px;font-size:.78rem"></p>
+      </div>
+      <button class="modal-close" data-close>&times;</button>
+    </div>
+    <div class="table-wrap" style="padding:0 22px">
+      <h4 class="modal-sec-title">Currently Allotted To</h4>
+      <table>
+        <thead><tr><th>Person</th><th>BELT No.</th><th>Posting</th><th>Qty (Remaining)</th><th>Allotted On</th><th>Status</th></tr></thead>
+        <tbody id="aidAllottedBody"></tbody>
+      </table>
+      <h4 class="modal-sec-title" style="margin-top:18px">Transaction History</h4>
+      <table>
+        <thead><tr><th>Date</th><th>Transaction</th><th>Qty</th><th>Person</th><th>Remarks</th><th>By</th></tr></thead>
+        <tbody id="aidHistoryBody"></tbody>
+      </table>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline" data-close>Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Person Detail Modal -->
+<div class="modal-backdrop hidden" id="allocPersonDetailModal">
+  <div class="modal modal-xl">
+    <div class="modal-header">
+      <div>
+        <h2 id="apdTitle">Person Details</h2>
+        <p class="page-subtitle" id="apdSubtitle" style="margin-top:4px;font-size:.78rem"></p>
+      </div>
+      <button class="modal-close" data-close>&times;</button>
+    </div>
+    <div class="table-wrap" style="padding:0 22px">
+      <h4 class="modal-sec-title">Currently Allotted Items</h4>
+      <table>
+        <thead><tr><th>Item</th><th>Category</th><th>Qty (Remaining)</th><th>Allotted Date</th><th>Status</th></tr></thead>
+        <tbody id="apdAllottedBody"></tbody>
+      </table>
+      <h4 class="modal-sec-title" style="margin-top:18px">Returned / Settled Items</h4>
+      <table>
+        <thead><tr><th>Item</th><th>Qty Returned</th><th>Condition</th><th>Allotted Date</th><th>Return Date</th><th>Status</th></tr></thead>
+        <tbody id="apdReturnedBody"></tbody>
+      </table>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline" data-close>Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Stat Detail / Export Modal -->
+<div class="modal-backdrop hidden" id="statDetailModal">
+  <div class="modal modal-xl">
+    <div class="modal-header">
+      <div>
+        <h2 id="statDetailTitle">Detail</h2>
+        <p class="page-subtitle" id="statDetailSubtitle" style="margin-top:4px;font-size:.78rem"></p>
+      </div>
+      <button class="modal-close" data-close>&times;</button>
+    </div>
+    <div class="stat-toolbar">
+      <div class="stat-export-dd">
+        <button class="btn btn-sm btn-primary" id="statExportBtn">Download / Print <span class="ee-caret">&#9662;</span></button>
+        <div class="stat-export-menu hidden" id="statExportMenu">
+          <button data-export="pdf"><span class="ee-ic">&#128196;</span> Download PDF</button>
+          <button data-export="excel"><span class="ee-ic">&#128229;</span> Download Excel</button>
+          <button data-export="word"><span class="ee-ic">&#128220;</span> Download Word</button>
+          <button data-export="print"><span class="ee-ic">&#128424;</span> Print</button>
+        </div>
+      </div>
+      <div class="stat-search-wrap">
+        <input type="text" class="stat-search" id="statSearch" placeholder="Search this list...">
+        <span class="stat-search-icon">&#128269;</span>
+      </div>
+      <span class="stat-toolbar-note" id="statDetailCount"></span>
+    </div>
+    <div class="table-wrap" style="padding:0 22px 20px">
+      <table>
+        <thead id="statDetailHead"></thead>
+        <tbody id="statDetailBody"></tbody>
+      </table>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline" data-close>Close</button>
+    </div>
+  </div>
+</div>
+
 <!-- Toast Notification -->
 <div class="toast hidden" id="toast"></div>
 
-<script src="api-client.js"></script>
-<script src="app.js"></script>
+<script src="api-client.js?v=2026.09.24"></script>
+  <script src="app.js?v=2026.09.24"></script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
